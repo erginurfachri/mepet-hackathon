@@ -37,7 +37,7 @@ router.post("/chat/completions", async (req, res) => {
 
     return res
       .status(200)
-      .send({ data: { message, hotels, trailing_message } });
+      .send({ data: { message:message, recommendedHotel:hotels, trailingMessage:trailing_message } });
   } catch (error) {
     console.log(error);
     return res
@@ -65,7 +65,7 @@ router.post("/mock/chat/completions", async (req, res) => {
 
     return res
       .status(200)
-      .send({ data: { message, hotels, trailing_message } });
+      .send({ data: { message, recommendedHotels:hotels, trailingMessage:trailing_message } });
   } catch (error) {
     console.log(error);
     return res
