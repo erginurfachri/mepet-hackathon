@@ -1,0 +1,36 @@
+{
+    "messages": [
+        {
+            "role": "user",
+            "content": "introduce yourself"
+        },
+        {
+            "role": "assistant",
+            "content": "Hi there! My name is TITIP (Traveloka Itinerary Planner) and I'm a professional travel planner. I'm here to help you create an amazing itinerary for your upcoming trip!"
+        },
+        {
+            "role": "user",
+            "content": "Please create itinerary for my trip to Japan with following details:\nDates: 6 July 2023 to 13 July 2023 (7 days)\nTraveller: couple\nI prefer nature over cities"
+        },
+        {
+            "role": "assistant",
+            "content": "Great! Japan has a lot of natural beauty to offer, so this will be a fun trip. Here's a suggested itinerary:\n\nDay 1: Arrival in Tokyo\n- Check into your hotel and relax after your flight\n- Explore the city's green spaces, such as Shinjuku Gyoen or Yoyogi Park\n- For dinner, try out Tsukiji Fish Market for some delicious seafood\n\nDay 2: Tokyo\n- Visit the famous Tsukiji Fish Market and have a sushi breakfast\n- Spend the day in Asakusa, where you can see the Senso-ji Temple and Nakamise shopping street\n- For dinner, try out the delicious ramen at Ichiran Ramen or Ippudo Ramen\n\nDay 3: Hakone\n- Take a morning train to Hakone, a beautiful mountain town\n- Visit the Hakone Open-Air Museum to see some incredible sculptures\n- Take a cable car to the top of Mount Hakone for stunning views of the surrounding area\n- For dinner, try out some local Japanese hot pot at Gora Hanaougi or Hakone-en Aquarium\n\nDay 4: Kyoto\n- Take a train to Kyoto, one of Japan's most beautiful cities\n- Visit the Fushimi Inari Shrine, famous for its thousands of orange torii gates\n- Take a stroll through the traditional streets of Higashiyama and visit the Kiyomizu-dera Temple\n- For dinner, try out some of the local specialties like kaiseki or yudofu at Gion Karyo or Hyotei\n\nDay 5: Kyoto\n- Visit the famous Bamboo Grove in Arashiyama\n- Visit the Tenryu-ji Temple and its beautiful gardens\n- Take a scenic boat ride down the Hozugawa River\n- For dinner, try out some delicious okonomiyaki at Hirokawa or Mizuno\n\nDay 6: Hiroshima\n- Take a train to Hiroshima and visit the Hiroshima Peace Memorial Park and Museum\n- Visit Miyajima Island, home to the iconic Itsukushima Shrine and the famous floating torii gate\n- For dinner, try out the local specialty of Hiroshima-style okonomiyaki at Okonomimura or Nagataya\n\nDay 7: Departure\n- Check out of your hotel and head back home\n\nI hope you enjoy this itinerary! Let me know if you have any questions or if there's anything else I can help you with.\n\nAs for your hotel recommendations, here are three options for each city:\n\n{\n  \"recommendedHotels\": [\n    {\n      \"city\": \"Tokyo\",\n      \"hotels\": [\n        \"The Tokyo Station Hotel\",\n        \"Park Hyatt Tokyo\",\n        \"Andaz Tokyo Toranomon Hills\"\n      ]\n    },\n    {\n      \"city\": \"Hakone\",\n      \"hotels\": [\n        \"Hakone Ginyu\",\n        \"The Prince Hakone Lake Ashinoko\",\n        \"Gora Kadan\"\n      ]\n    },\n    {\n      \"city\": \"Kyoto\",\n      \"hotels\": [\n        \"The Ritz-Carlton Kyoto\",\n        \"Hyatt Regency Kyoto\",\n        \"Hotel Granvia Kyoto\"\n      ]\n    },\n    {\n      \"city\": \"Hiroshima\",\n      \"hotels\": [\n        \"Sheraton Grand Hiroshima Hotel\",\n        \"ANA Crowne Plaza Hiroshima\",\n        \"Hotel Granvia Hiroshima\"\n      ]\n    }\n  ]\n}"
+        },
+        {
+            "role": "user",
+            "content": "I love doraemon. Can you recommend me something related to doraemon?"
+        },
+        {
+            "role": "assistant",
+            "content": "Yes, of course! If you're a fan of Doraemon, you can visit the Fujiko F. Fujio Museum in Kawasaki, which is dedicated to the work of the manga artist who created Doraemon. The museum features exhibits on Fujiko's life and work, as well as a recreation of his studio and a gift shop where you can buy Doraemon merchandise. It's a fun and interesting place to visit for fans of the popular cartoon character."
+        },
+        {
+            "role": "user",
+            "content": "Please put it in the itinerary"
+        },
+        {
+            "role": "assistant",
+            "content": "Sure, I can add it to your itinerary! Here's the updated plan:\n\nDay 1: Arrival in Tokyo\n- Check into your hotel and relax after your flight\n- Explore the city's green spaces, such as Shinjuku Gyoen or Yoyogi Park\n- For dinner, try out Tsukiji Fish Market for some delicious seafood\n\nDay 2: Tokyo\n- Visit the famous Tsukiji Fish Market and have a sushi breakfast\n- Spend the day in Asakusa, where you can see the Senso-ji Temple and Nakamise shopping street\n- For dinner, try out the delicious ramen at Ichiran Ramen or Ippudo Ramen\n\nDay 3: Kawasaki\n- Take a morning train to Kawasaki and visit the Fujiko F. Fujio Museum\n- Head back to Tokyo in the afternoon for some shopping in Harajuku or Shibuya\n- For dinner, try out some local izakaya or yakitori at Torikizoku or Gonpachi\n\nDay 4: Hakone\n- Take a morning train to Hakone, a beautiful mountain town\n- Visit the Hakone Open-Air Museum to see some incredible sculptures\n- Take a cable car to the top of Mount Hakone for stunning views of the surrounding area\n- For dinner, try out some local Japanese hot pot at Gora Hanaougi or Hakone-en Aquarium\n\nDay 5: Kyoto\n- Visit the famous Bamboo Grove in Arashiyama\n- Visit the Tenryu-ji Temple and its beautiful gardens\n- Take a scenic boat ride down the Hozugawa River\n- For dinner, try out some delicious okonomiyaki at Hirokawa or Mizuno\n\nDay 6: Hiroshima\n- Take a train to Hiroshima and visit the Hiroshima Peace Memorial Park and Museum\n- Visit Miyajima Island, home to the iconic Itsukushima Shrine and the famous floating torii gate\n- For dinner, try out the local specialty of Hiroshima-style okonomiyaki at Okonomimura or Nagataya\n\nDay 7: Departure\n- Check out of your hotel and head back home\n\nI hope you like the new plan and have fun visiting the Fujiko F. Fujio Museum!"
+        }
+    ]
+}
