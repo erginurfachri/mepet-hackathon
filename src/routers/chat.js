@@ -164,16 +164,19 @@ router.post("/mock/chat/getHotelRecommendations", async (req, res) => {
     requestOptions
   )
   
-  console.log(result.data.hotelContent.rows[0])
-  console.log(fetchHotelDetailPage.json)
-  
   const text = await fetchHotelDetailPage.text()
   const dom = new JSDOM(text);
-  console.log(dom)
-  const hotelElement = dom.window.document.querySelector('#__next > div > div.css-1dbjc4n.r-f4gmv6.r-1jgb5lz.r-q90dru.r-95jzfe.r-13qz1uu > div:nth-child(4) > div > div:nth-child(1) > div.css-1dbjc4n.r-13awgt0 > div > div > div:nth-child(3)')
-    .textContent;
+
+  const description = dom.window.document.querySelector('#__next > div > div.css-1dbjc4n.r-f4gmv6.r-1jgb5lz.r-q90dru.r-95jzfe.r-13qz1uu > div:nth-child(4) > div > div:nth-child(1) > div.css-1dbjc4n.r-13awgt0 > div > div > div:nth-child(3)')
+  const review = dom.window.document.querySelector('#__next > div > div.css-1dbjc4n.r-f4gmv6.r-1jgb5lz.r-q90dru.r-95jzfe.r-13qz1uu > div.css-1dbjc4n.r-obd0qt.r-18u37iz.r-ml3lyg.r-tskmnb > div.css-1dbjc4n.r-13awgt0.r-1ssbvtb > div.css-1dbjc4n.r-eqz5dr > div.css-1dbjc4n.r-1awozwy.r-18u37iz.r-1h0z5md > div:nth-child(3) > div > div');
+  const price = dom.window.document.querySelector('#__next > div > div.css-1dbjc4n.r-f4gmv6.r-1jgb5lz.r-q90dru.r-95jzfe.r-13qz1uu > div.css-1dbjc4n.r-obd0qt.r-18u37iz.r-ml3lyg.r-tskmnb > div.css-1dbjc4n.r-b83rso.r-f4gmv6 > div > h1')
+  const photo = dom.window.document.querySelector('#__next > div > div.css-1dbjc4n.r-f4gmv6.r-1jgb5lz.r-q90dru.r-95jzfe.r-13qz1uu > div.css-1dbjc4n.r-bnwqim > div.css-1dbjc4n.r-18u37iz.r-n9chd3 > div.css-1dbjc4n.r-1o44xyg.r-kdyh1x.r-1loqt21.r-13awgt0.r-n9chd3.r-1udh08x.r-bnwqim.r-1otgn73.r-1i6wzkk.r-lrvibr.r-13qz1uu > img')
   
-  hotelData.description = hotelElement
+  hotelData.description = description == null? null: description.textContent
+  hotelData.price = price == null ? null : price.textContent
+  hotelData.photo = photo == null ? null : photo.src
+  hotelData.review = review == null ? null : review.children.length
+
   try {
     return res
       .status(200)
