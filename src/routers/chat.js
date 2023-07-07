@@ -53,24 +53,29 @@ router.post("/chat/completions", async (req, res) => {
     );
 
     const completion_text = result.choices[0].message.content
+    console.log(completion_text)
     //seperate into 3 parts: message (before json), json, and trailing_message (after json)
     const reply = completion_text.replace("`", "");
     const jsonStartIndex = reply.indexOf("{");
     const jsonEndIndex = reply.lastIndexOf("}") + 1;
     
-    var message = reply.substring(0, jsonStartIndex);
-    var trailing_message = reply.substring(jsonEndIndex);
+    var jsonCandidate = null
 
     if (jsonStartIndex + 1 == jsonEndIndex) {
       message = reply
       trailing_message = ""
+    } else {
+      var message = reply.substring(0, jsonStartIndex);
+      var trailing_message = reply.substring(jsonEndIndex);
+      jsonCandidate = extractJSON(reply)[0].recommendedHotels
+      console.log(jsonCandidate)
     }
     // Trailing message is needed because sometimes the chatgpt unexpectedly write something after hotel recommendations
-
-
+    
+   
     return res
       .status(200)
-      .send({ data: { message: message, recommendedHotel: extractJSON(reply), trailingMessage: trailing_message } });
+      .send({ data: { message: message, recommendedHotels: jsonCandidate, trailingMessage: trailing_message } });
   } catch (error) {
     console.log(error);
     return res
@@ -128,6 +133,8 @@ function get_headers() {
   return myHeaders
 }
 
+
+
 router.post("/mock/chat/getHotelRecommendations", async (req, res) => {
   
   var my_headers = get_headers()
@@ -167,7 +174,6 @@ router.post("/mock/chat/getHotelRecommendations", async (req, res) => {
     .textContent;
   
   hotelData.description = hotelElement
-
   try {
     return res
       .status(200)
