@@ -3,6 +3,7 @@ const {
   client,
   deploymentId,
 } = require("../lmm_models/azure_chatgpt_35_turbo");
+const { JSDOM } = require('jsdom');
 const travel_itineray_planner_settings = require("../lmm_configs/travel_itinerary_planner_model_config");
 const router = new express.Router();
 
@@ -35,20 +36,6 @@ function extractJSON(str) {
   } while (firstOpen != -1);
 }
 
-var history = [
-  [
-    {
-      role: "system",
-      content:
-        'You are a professional travel planner named TITIP (Traveloka Itinerary Planner) who helps people create itinerary for their trip.\n\nYou should sound enthusiastic and positive.\n\nOnly answer questions related to travel. \n\nDescribe every activities concisely. Also recommend food or restaurant for breakfast or lunch or dinner.\n\nYou can ask them back for clarification if the information is not sufficient for you.\n\nRecommend 3 hotels for each cities at the end of the chat in JSON machine-readable format. Use the JSON structure below\n\n{\n  "recommendedHotels": [\n    {\n      "city": The city of the hotel e.g. "Tokyo",\n      "hotels": [hotel1,hotel2,hotel3]\n    },\n  ]\n}',
-    },
-    {
-      role: "user",
-      content: initial_input_text
-    }
-  ]
-];
-
 router.post("/chat/completions", async (req, res) => {
   var combined = [
     travel_itineray_planner_settings.system_message,
@@ -76,7 +63,7 @@ router.post("/chat/completions", async (req, res) => {
 
     if (jsonStartIndex + 1 == jsonEndIndex) {
       message = reply
-      trailing_message = reply.substring(jsonEndIndex, jsonEndIndex + 1)
+      trailing_message = ""
     }
     // Trailing message is needed because sometimes the chatgpt unexpectedly write something after hotel recommendations
 
@@ -144,161 +131,47 @@ function get_headers() {
 router.post("/mock/chat/getHotelRecommendations", async (req, res) => {
   
   var my_headers = get_headers()
-  var raw1 = JSON.stringify({
+  var rawRequest = JSON.stringify({
     "fields": [],
     "data": {
-      "query": "century park hotel"
+      "query": req.body.hotels.name
     },
     "clientInterface": "desktop"
   });
   
-  var raw2 = JSON.stringify({
-    "fields": [],
-    "data": {
-      "query": "padma hotelbandung"
-    },
-    "clientInterface": "desktop"
-  });
-  var raw = [raw1, raw2]
-  const urls = [
-    "https://www.traveloka.com/api/v1/hotel/autocomplete",
-    "https://www.traveloka.com/api/v1/hotel/autocomplete",
-  ];
-  var requestOptions = {
+  const requestOptions = {
     method: 'POST',
     headers: my_headers,
-    body: raw1,
+    body: rawRequest,
     redirect: 'follow'
-  };
-
-  count = 0;
-
-  const fetchResult = await fetch("https://www.traveloka.com/api/v1/hotel/autocomplete", requestOptions)
-  const result = await fetchResult.json()
-  console.log(result)
-
-  /*const promises = urls.map((url) =>  
-    fetch(
-      url, requestOptions
-    ).then((response) => response.json)
-  );
-
-  const data = await Promise.all(promises)
-  console.log(data[0].data)*/
-  // api call to traveloka auto complete by hotelname
-
-  var response = {
-    "success": true,
-    "status": "SUCCESS",
-    "data": {
-      "autoCompleteContent": {
-        "rows": []
-      },
-      "geoCountryContent": {
-        "rows": []
-      },
-      "geoRegionContent": {
-        "rows": []
-      },
-      "geoCityContent": {
-        "rows": []
-      },
-      "geoAreaContent": {
-        "rows": []
-      },
-      "landmarkContent": {
-        "rows": []
-      },
-      "hotelContent": {
-        "rows": [
-          {
-            "id": "3000010029705",
-            "placeId": null,
-            "type": "HOTEL",
-            "name": "Padma Hotel Bandung, Ciumbuleuit, Bandung, West Java",
-            "numberOfHotel": null,
-            "numHotels": "0",
-            "targetUrl": "indonesia/padma-hotel-bandung-3000010029705",
-            "landmarkType": null,
-            "accommodationType": "HOTEL",
-            "geoLocation": {
-              "lon": "107.60898799999995",
-              "lat": "-6.864834000000001",
-              "valid": true
-            },
-            "matchingScore": "128.07971",
-            "searchByFormerlyName": false,
-            "localeDisplayType": "Hotels",
-            "displayName": "Padma Hotel Bandung",
-            "globalName": "Padma Hotel Bandung",
-            "additionalInfo": "Ciumbuleuit, Bandung, West Java",
-            "distance": null
-          },
-          {
-            "id": "3000010030350",
-            "placeId": null,
-            "type": "HOTEL",
-            "name": "Padma Homestay, Dago Atas, Dago, Bandung",
-            "numberOfHotel": null,
-            "numHotels": "0",
-            "targetUrl": "indonesia/padma-homestay-3000010030350",
-            "landmarkType": null,
-            "accommodationType": "HOMESTAY",
-            "geoLocation": {
-              "lon": "107.61319398705382",
-              "lat": "-6.8757190598015",
-              "valid": true
-            },
-            "matchingScore": "18.392689",
-            "searchByFormerlyName": false,
-            "localeDisplayType": "Homestays",
-            "displayName": "Padma Homestay",
-            "globalName": "Padma Homestay",
-            "additionalInfo": "Dago Atas, Dago, Bandung",
-            "distance": null
-          }
-        ]
-      },
-      "areaRecommendationContent": {
-        "geoName": "",
-        "rows": []
-      },
-      "recentlyViewed": {
-        "properties": [],
-        "isRecommendationEnabled": false
-      }
-    },
-    "message": "",
-    "userContext": null,
-    "failed": false
   }
 
-  console.log(response.data.hotelContent.rows[0])
+  const fetchResult = await fetch("https://www.traveloka.com/api/v1/hotel/autocomplete", 
+    requestOptions
+  )
+  const result = await fetchResult.json()
+  const hotelData = result.data.hotelContent.rows[0]
+  const target_url = hotelData.targetUrl
 
-  //concant all hotelcontent rows and return\
-
-
+  const fetchHotelDetailPage = await fetch("https://www.traveloka.com/en-id/hotel/" + target_url,
+    requestOptions
+  )
   
+  console.log(result.data.hotelContent.rows[0])
+  console.log(fetchHotelDetailPage.json)
+  
+  const text = await fetchHotelDetailPage.text()
+  const dom = new JSDOM(text);
+  console.log(dom)
+  const hotelElement = dom.window.document.querySelector('#__next > div > div.css-1dbjc4n.r-f4gmv6.r-1jgb5lz.r-q90dru.r-95jzfe.r-13qz1uu > div:nth-child(4) > div > div:nth-child(1) > div.css-1dbjc4n.r-13awgt0 > div > div > div:nth-child(3)')
+    .textContent;
+  
+  hotelData.description = hotelElement
 
   try {
-    const message =
-      'Great! Here\'s a suggested itinerary for your 7-day trip to Bandung:\n\nDay 1:\n- Arrive at Husein Sastranegara International Airport\n- Check-in at your hotel\n- Visit Tangkuban Perahu volcano to enjoy the scenic beauty of the active volcano\n- Try traditional Sundanese food for lunch at "Kampung Daun" restaurant\n- Visit Dago Pakar area for the amazing view of Bandung city from the hills\n\nDay 2:\n- Visit Kawah Putih, an impressive white crater lake located in Ciwidey area\n- Have a lunch at floating market in Lembang area\n- Visit the famous tea plantations in Ciwidey area\n- Back to hotel\n\nDay 3:\n- Visit the beautiful Maribaya waterfall and hot springs\n- Explore the amazing trees at Treetop Adventure Park\n- Have a lunch at a local restaurant near the area\n- Visit the stunning Glamping Lakeside in Situ Cileunca\n\nDay 4:\n- Visit the Tangkuban Parahu volcano again, but this time take a different route through Lembang\n- Have a lunch at "The Peak" restaurant with a panoramic view of Bandung city\n- Visit the Instagenic European-style Castle, "Gedung Sate"\n\nDay 5:\n- Visit the amazing Trans Studio Bandung, a theme park with indoor and outdoor rides\n- Have lunch at the theme park\'s restaurants\n- Visit the Paris Van Java shopping mall for a shopping spree\n\nDay 6:\n- Relax at the Jendela Alam Farm in Lembang and take photos with the farm animals\n- Have lunch at a local restaurant near the area\n- Visit the Rabbit town, a park with various types of rabbits\n\nDay 7:\n- Visit the Cihampelas Walk shopping street, famous for its jeans and fashion shops\n- Have lunch at a local restaurant near the area\n- Check-out from your hotel and head to the airport for your flight back home\n\nRecommended hotels:\n';
-    const hotels = [
-      {
-        city: "Bandung",
-        hotels: [
-          "Padma Hotel Bandung",
-          "The Trans Luxury Hotel Bandung",
-          "Aryaduta Bandung",
-        ],
-      },
-    ];
-
-    const trailing_message = "I hope you enjoy your trip!";
-
     return res
       .status(200)
-      .send({ data: { message, recommendedHotels: hotels, trailingMessage: trailing_message } });
+      .send(hotelData);
   } catch (error) {
     console.log(error);
     return res
