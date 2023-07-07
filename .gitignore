@@ -1,6 +1,9 @@
+# package directories
 node_modules
 build
 npm-debug.log
 .nyc
 .env
 .DS_Store
+# Serverless directories
+.serverless
