@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
+
 const chatRouter = require("./routers/chat")
 
 const app = express();
@@ -18,3 +19,5 @@ app.use(chatRouter);
 app.listen(PORT, () => {
     console.log(`server listening on port ${PORT}`);
 });
+
+module.exports = app;
